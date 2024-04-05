@@ -1,0 +1,76 @@
+llm:
+  model: ChatGPT4
+  chat:
+    - prompt: What are the functions of it?
+      answer:
+        - h2: Main Functions of Information Technology (IT)
+        - ul:
+            - li: Managing and processing information through computers and software. This includes data storage, retrieval, and manipulation for analysis purposes.
+            - li: Supporting data management tasks such as data entry, database management, data mining, and data warehousing.
+            - li: Ensuring the security and privacy of data through various means such as encryption, secure access controls, and cybersecurity measures.
+            - li: Facilitating communication and collaboration through networking technologies, email, social media, and other online platforms.
+            - li: Providing technical support and maintenance for IT systems and networks to ensure optimal performance and to prevent or address technical issues.
+            - li: Developing and managing websites and online services, including content management, web hosting, and online transaction processing.
+            - li: Implementing and managing software applications and systems, ranging from operating systems to business applications and mobile apps.
+            - li: Overseeing the development and integration of systems and technologies to meet organizational needs and to promote digital transformation.
+            - li: Conducting research and development in IT to innovate and improve upon existing technologies and to explore new solutions.
+            - li: Promoting digital literacy and providing training on IT tools and systems to users and staff to enhance efficiency and productivity.
+
+Data:
+  Functions:
+    - Store (Hardware / Head)
+    - Retrieve (Read)
+    - Manipulate (Write/Delete)
+    - Transfer (over the Earth):
+      - Speed:
+        - 1900: 33.6Kbits in days
+        - 2000: 33.6Kbits/s
+        - 2024: 10Gbits/s
+                10,000,000Kbits/s
+                300,000 progress in 20 years in speed
+  Requirements:
+    - Infrastructure:
+      - supported by:
+        - Hardware
+        - Humans
+      - Security: 
+        - supported by:
+          - Ai
+          - Humans
+      - Improvements:
+        - supported by:
+          - Ai
+          - Humans
+
+# @todo write a javascript to generate a text throught the svg characters,
+# generated from the definitions for every [a-z] by the connecting points defined as
+# values in coordinates [x, y]
+# define a width and height of the svg character by the border of drawn letter
+Trysuttia:
+  Font:
+    Definitions:
+      a: qnoq
+      b: acdbea
+      c: pqn
+      d: egfe
+      e: pqneq
+      f: acdcbe
+      g: eacd
+      p: acdb
+    Coordinates:
+      a: [5, 168]
+      b: [5, 102]
+      c: [5, 36]
+      d: [36, 70]
+      e: [70, 168]
+      f: [136, 168]
+      g: [136, 102]
+      h: [136, 36]
+      j: [105, 70]
+      k: [71, 5]
+      l: [36, 36]
+      m: [105, 36]
+      n: [71, 138]
+      o: [102, 168]
+      p: [71, 201]
+      q: [41, 168]
