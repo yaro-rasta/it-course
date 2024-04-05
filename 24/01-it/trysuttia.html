@@ -1,0 +1,157 @@
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1,user-scalable=yes">
+    <title>Font generator</title>
+    <style>
+        html,body { font-size: 16px; }
+        body { display: flex; flex-direction: column; align-items: center; }
+        #output { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1rem; }
+        #output span.space { width: 3rem; }
+        #output span.br { flex: 1 1 100%; }
+        textarea { margin: 3rem; padding: .5rem; font-size: 1rem; min-height: 9rem; min-width: 30rem; border-radius: 1rem; }
+        h1 { text-align: center; }
+        svg path { stroke-linecap: round; stroke-linejoin: round; }
+        /* svg { scale: .5 } */
+    </style>
+</head>
+
+<body>
+    <textarea id="inputText"></textarea>
+    <main id="output"></main>
+</body>
+
+<script>
+    const fontDefinitions = {
+        a: 'qnoq',
+        b: 'acdbea',
+        c: 'pqn',
+        d: 'egfe',
+        e: 'pqnqeq',
+        f: 'acdcbe',
+        g: 'eacd',
+        p: 'acdb',
+        h: 'acbghf',
+        i: 'ab',
+        j: 'efh',
+        k: 'acbdbe',
+        l: 'cae',
+        m: 'abegf',
+        n: 'aber',
+        o: 'opqno',
+        q: 'opqnoe',
+        r: 'acdbe',
+        s: 'hjge',
+        t: 'lmsn',
+        u: 'qpo',
+        v: 'beg',
+        w: 'bqnog',
+        x: 'agnbf',
+        y: 'jghf',
+        z: 'eonop',
+        // ' ': 'qo',
+    };
+
+    const coordinates = {
+        a: [5, 168],
+        b: [5, 102],
+        c: [5, 36],
+        d: [36, 70],
+        e: [70, 168],
+        f: [136, 168],
+        g: [136, 102],
+        h: [136, 36],
+        j: [105, 70],
+        k: [71, 5],
+        l: [36, 36],
+        m: [105, 36],
+        n: [71, 138],
+        o: [102, 168],
+        p: [71, 201],
+        q: [41, 168],
+        r: [70, 102],
+        s: [70, 36],
+    };
+
+    function generateSvgLetter(letter) {
+        const definition = fontDefinitions[letter];
+        if (!definition) return '';
+
+        let maxX = 0, maxY = 0, minX = Infinity, minY = Infinity;
+
+        function updateBounds(x, y) {
+            minX = Math.min(minX, x);
+            minY = Math.min(minY, y);
+            maxX = Math.max(maxX, x);
+            maxY = Math.max(maxY, y);
+        }
+
+        let pathD = '';
+        for (let i = 0; i < definition.length - 1; i++) {
+            const start = coordinates[definition[i]];
+            const end = coordinates[definition[i + 1]];
+            if (start && end) {
+                pathD += `M${start[0]},${start[1]} L${end[0]},${end[1]} `;
+                updateBounds(start[0], start[1]);
+                updateBounds(end[0], end[1]);
+            }
+        }
+
+        const width = maxX - minX + 10; // Adding padding
+        const height = maxY - minY + 10; // Adding padding
+
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.setAttribute("width", width);
+        svg.setAttribute("height", height);
+        svg.setAttribute("viewBox", `${minX - 5} ${minY - 5} ${width} ${height}`);
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", pathD);
+        path.setAttribute("stroke", "black");
+        path.setAttribute("stroke-width", "6px");
+        path.setAttribute("fill", "none");
+        path.setAttribute("stroke-linejoin", "round"); // Add rounded joins
+        svg.appendChild(path);
+
+        return svg;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const $input = document.getElementById('inputText');
+        const $output = document.getElementById('output');
+
+        // Function to clear the output container
+        function clearOutput() {
+            $output.innerHTML = '';
+        }
+
+        // Function to generate and display SVG text
+        function generateAndDisplaySvgText(text) {
+            clearOutput(); // Clear previous output
+            for (const letter of text.toLowerCase()) {
+                const svgLetter = generateSvgLetter(letter);
+                if (svgLetter) {
+                    $output.appendChild(svgLetter);
+                } else if (' ' === letter) {
+                    const $span = document.createElement('span');
+                    $span.className = 'space';
+                    $output.appendChild($span);
+                } else if ('\n' === letter) {
+                    const $span = document.createElement('span');
+                    $span.className = 'br';
+                    $output.appendChild($span);
+                }
+            }
+        }
+
+        // Event listener for input change
+        $input.addEventListener('input', function () {
+            const text = $input.value;
+            generateAndDisplaySvgText(text);
+        });
+
+        // Initial generation for default or example text
+        generateAndDisplaySvgText('abcdefghijklmnopqrstuvwxyz');
+    });
+
+</script>
+
+</html>
