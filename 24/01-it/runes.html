@@ -1,0 +1,148 @@
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1,user-scalable=yes">
+    <title>Font generator</title>
+    <style>
+        html,body { font-size: 16px; }
+        body { display: flex; flex-direction: column; align-items: center; }
+        #output { display: flex; flex-direction: row; flex-wrap: wrap; align-items: end; justify-content: start; gap: 1rem; }
+        #output span.space { width: 3rem; }
+        textarea { margin: 3rem; padding: .5rem; font-size: 1rem; min-height: 9rem; min-width: 30rem; border-radius: 1rem; }
+        h1 { text-align: center; }
+        svg path { stroke-linecap: round; stroke-linejoin: round; }
+        /* svg { scale: .5 } */
+    </style>
+</head>
+
+<body>
+    <h1>We use here HTML, CSS, Javascript, and SVG to generate a font<br>
+    and ChatGPT 4 to generate an app</h1>
+    <textarea id="inputText"></textarea>
+    <main id="output"></main>
+</body>
+
+<script>
+    const fontDefinitions = {
+        // a: 'hafeh',
+        a: 'hiadfdei',
+        b: 'hjcieh',
+        c: 'ghic',
+        d: 'aeice',
+        e: 'cihghe',
+        f: 'cjhie',
+        g: 'gfbced',
+        h: 'jhieg',
+        i: 'ge',
+        j: 'bfg',
+        k: 'jhiaig',
+        l: 'jhg',
+        m: 'hjebf',
+        n: 'hjea',
+        o: 'icdfghi',
+        p: 'hjci',
+        q: 'fbced',
+        r: 'hjcig',
+        s: 'bcde',
+        t: 'gcicd',
+        u: 'ihge',
+        v: 'igd',
+        w: 'ihefd',
+        x: 'ifedh',
+        y: 'jcbce',
+        z: 'cdef',
+        // ' ': 'qo',
+        '?': 'abdeg',
+    };
+
+    const coordinates = {
+        a: [99, 0],
+        b: [198, 60],
+        c: [99, 120],
+        d: [198, 180],
+        e: [99, 240],
+        f: [198, 300],
+        g: [99, 360],
+        h: [0, 300],
+        i: [0, 180],
+        j: [0, 60],
+    };
+
+    function generateSvgLetter(letter) {
+        const definition = fontDefinitions[letter];
+        if (!definition) return '';
+
+        let maxX = 0, maxY = 0, minX = Infinity, minY = Infinity;
+
+        function updateBounds(x, y) {
+            minX = Math.min(minX, x);
+            minY = Math.min(minY, y);
+            maxX = Math.max(maxX, x);
+            maxY = Math.max(maxY, y);
+        }
+
+        let pathD = '';
+        for (let i = 0; i < definition.length - 1; i++) {
+            const start = coordinates[definition[i]];
+            const end = coordinates[definition[i + 1]];
+            if (start && end) {
+                pathD += `M${start[0]},${start[1]} L${end[0]},${end[1]} `;
+                updateBounds(start[0], start[1]);
+                updateBounds(end[0], end[1]);
+            }
+        }
+
+        const width = maxX - minX + 10; // Adding padding
+        const height = maxY - minY + 10; // Adding padding
+
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.setAttribute("width", width);
+        svg.setAttribute("height", height);
+        svg.setAttribute("viewBox", `${minX - 5} ${minY - 5} ${width} ${height}`);
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", pathD);
+        path.setAttribute("stroke", "black");
+        path.setAttribute("stroke-width", "6px");
+        path.setAttribute("fill", "none");
+        path.setAttribute("stroke-linejoin", "round"); // Add rounded joins
+        svg.appendChild(path);
+
+        return svg;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const $input = document.getElementById('inputText');
+        const $output = document.getElementById('output');
+
+        // Function to clear the output container
+        function clearOutput() {
+            $output.innerHTML = '';
+        }
+
+        // Function to generate and display SVG text
+        function generateAndDisplaySvgText(text) {
+            clearOutput(); // Clear previous output
+            for (const letter of text.toLowerCase()) {
+                const svgLetter = generateSvgLetter(letter);
+                if (svgLetter) {
+                    $output.appendChild(svgLetter);
+                } else if (' ' === letter) {
+                    const $span = document.createElement('span');
+                    $span.className = 'space';
+                    $output.appendChild($span);
+                }
+            }
+        }
+
+        // Event listener for input change
+        $input.addEventListener('input', function () {
+            const text = $input.value;
+            generateAndDisplaySvgText(text);
+        });
+
+        // Initial generation for default or example text
+        generateAndDisplaySvgText('abcdefghijklmnopqrstuvwxyz');
+    });
+
+</script>
+
+</html>
